@@ -16,7 +16,7 @@ class DBClient {
       await this.client.connect();
       this.isConnected = true;
     } catch (err) {
-      console.log('something sent wrong');
+      console.log('something sent wrong: ', err);
       this.isConnected = false;
     }
   }
