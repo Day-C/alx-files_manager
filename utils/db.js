@@ -4,11 +4,11 @@ class DBClient {
   constructor() {
     this.host = process.env.DB_HOST || 'localhost';
     this.port = process.env.DB_PORT || 27017;
-    this.database = process.env.DB_DATABASE || 'file_manager';
+    this.database = process.env.DB_DATABASE || 'files_manager';
 
     this.url = `mongodb://${this.host}:${this.port}`;
-    this.client = new mongodbClient(this.url);
-    this.isConected = false;
+    this.client = new MongoClient(this.url, {useNewUrlParser: true, useUnifiedTopology: true});
+    this.isConnected = false;
   }
 
   async connect() {
@@ -16,15 +16,17 @@ class DBClient {
       await this.client.connect();
       this.isConnected = true;
     } catch (err) {
+      console.log('something sent wrong');
       this.isConnected = false;
     }
   }
 
-  isalive() {
+  isAlive() {
     return this.isConnected;
   }
 
   async nbUsers() {
+
     const db = this.client.db(this.database);
     const collection = db.collection('users');
     return await collection.countDocuments();
